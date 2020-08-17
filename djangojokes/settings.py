@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     #my apps
+    'common.apps.CommonConfig',
     'pages.apps.PagesConfig',
     'jokes.apps.JokesConfig'
 ]
