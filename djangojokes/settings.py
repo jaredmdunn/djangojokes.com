@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     #my apps
     'common.apps.CommonConfig',
     'pages.apps.PagesConfig',
-    'jokes.apps.JokesConfig'
+    'jokes.apps.JokesConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -107,6 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# AUTHENTICATION SETTINGS
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 # Internationalization
