@@ -8,8 +8,8 @@ from .views import (
 app_name = 'jokes'
 urlpatterns = [
     path('joke/create/', JokeCreateView.as_view(), name='create'),
-    path('joke/<int:pk>/delete/', JokeDeleteView.as_view(), name='delete'),
-    path('joke/<int:pk>/', JokeDetailView.as_view(), name='detail'),
+    path('joke/<slug>/delete/', JokeDeleteView.as_view(), name='delete'),
+    path('joke/<slug>/', JokeDetailView.as_view(), name='detail'),
     path('', JokeListView.as_view(), name='list'),
-    path('joke/<int:pk>/update/', JokeUpdateView.as_view(), name='update'),
+    path('joke/<slug>/update/', JokeUpdateView.as_view(), name='update'),
 ]
