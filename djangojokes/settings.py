@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     
     #my apps
     'common.apps.CommonConfig',
-    'pages.apps.PagesConfig',
+    'jobs.apps.JobsConfig',
     'jokes.apps.JokesConfig',
+    'pages.apps.PagesConfig',
     'users.apps.UsersConfig',
 ]
 
