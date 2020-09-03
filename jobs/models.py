@@ -1,7 +1,7 @@
 from django.db import models
 
 from django.core.exceptions import ValidationError
-from django.core.exceptions import URLValidator
+from django.core.validators import URLValidator
 from django.db import models
 
 def validate_future_date(value):
@@ -34,7 +34,7 @@ class Applicant(models.Model):
         blank=True, validators=[URLValidator(schemes=['http', 'https'])]
 
     )
-    employment_type = models.CharField(max_length=10, choice=EMPLOYMENT_TYPES)
+    employment_type = models.CharField(max_length=10, choices=EMPLOYMENT_TYPES)
     start_date = models.DateField(
         help_text='The earliest date you can start working.',
         validators=[validate_future_date]

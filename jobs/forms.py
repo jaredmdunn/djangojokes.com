@@ -52,7 +52,7 @@ class JobApplicationForm(forms.ModelForm):
             'desired_hourly_wage': forms.NumberInput(
                 attrs={'min': '10.00', 'max': '100.00', 'step': '.25'}
             ),
-            'cover_letter': forms.TextArea(attrs={'cols': '100', 'rows': '5'})
+            'cover_letter': forms.Textarea(attrs={'cols': '100', 'rows': '5'})
         }
         error_messages = {
             'start_date': {
