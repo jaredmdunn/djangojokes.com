@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 
@@ -30,6 +32,7 @@ class JokeDetailView(DetailView):
 
 class JokeListView(ListView):
     model = Joke
+
 
 class JokeUpdateView(UserPassesTestMixin, UpdateView):
     model = Joke
