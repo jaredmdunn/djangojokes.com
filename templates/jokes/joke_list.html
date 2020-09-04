@@ -12,7 +12,7 @@
         <tr>
           <th>Joke</th>
           <th>Category</th>
-          <th>Actions</th>
+          <th>Creator</th>
         </tr>
       </thead>
       <tbody>
@@ -27,14 +27,18 @@
                 <span class="badge badge-pill badge-secondary">{{ tag.tag }}</span>
               {% endfor %}
             </td>
-            <td>
-              <a class="btn btn-info p-1" href="{% url 'jokes:update' joke.slug %}">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              <a class="btn btn-danger p-1" href="{% url 'jokes:update' joke.slug %}">
-                <i class="fas fa-trash-alt"></i>
-              </a>
-            </td>
+            {% if user == joke.user %}
+              <td>
+                <a class="btn btn-info p-1" href="{% url 'jokes:update' joke.slug %}">
+                  <i class="fas fa-pencil-alt"></i>
+                </a>
+                <a class="btn btn-danger p-1" href="{% url 'jokes:update' joke.slug %}">
+                  <i class="fas fa-trash-alt"></i>
+                </a>
+              </td>
+            {% else %}
+              <td>by {{ joke.user.username }}</td>
+            {% endif %}
           </tr>
         {% endfor %}
       </tbody>
