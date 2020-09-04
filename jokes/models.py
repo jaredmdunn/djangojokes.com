@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
@@ -53,6 +54,9 @@ class Joke(models.Model):
     updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=50, unique=True, null=False, editable=False)
     tags = models.ManyToManyField('Tag', blank=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT
+    )
 
     def get_absolute_url(self):
         return reverse('jokes:detail', args=[self.slug])
