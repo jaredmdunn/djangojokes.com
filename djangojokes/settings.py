@@ -43,11 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third party apps
-    'crispy_forms',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    
+    'crispy_forms',
+    'private_storage',
+
     # my apps
     'common.apps.CommonConfig',
     'jobs.apps.JobsConfig',
@@ -181,6 +182,13 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+#private-storage settings
+PRIVATE_STORAGE_ROOT = MEDIA_ROOT / 'private/'
+PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 
 if os.environ.get('ENVIRONMENT') != 'production':
     from .local_settings import *
