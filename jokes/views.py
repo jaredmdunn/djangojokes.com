@@ -51,52 +51,50 @@ class JokeUpdateView(SuccessMessageMixin, UserPassesTestMixin, UpdateView):
         obj = self.get_object()
         return self.request.user == obj.user
 
-    def vote(request, slug):
-        user = request.user
-        joke = Joke.objects.get(slug=slug)
-        data = json.loads(request.body)
+def vote(request, slug):
+    user = request.user
+    joke = Joke.objects.get(slug=slug)
+    data = json.loads(request.body)
 
-        vote = data['vote']
-        likes = data['likes']
-        dislikes = data['dislikes']
+    vote = data['vote']
+    likes = data['likes']
+    dislikes = data['dislikes']
 
-        if user.is_anonymous:
-            msg = 'Sorry, you have to be logged in to vote.'
-        else:
-            if JokeVote.objects.filter(user=user, joke=joke).exists():
-                joke_vote = JokeVote.objects.get(user=user, joke=joke)
+    if user.is_anonymous:
+        msg = 'Sorry, you have to be logged in to vote.'
+    else:
+        if JokeVote.objects.filter(user=user, joke=joke).exists():
+            joke_vote = JokeVote.objects.get(user=user, joke=joke)
 
-                if joke_vote.vote == vote:
-                    msg = 'Right. You told us already. Geez.'
-                else: 
-                    joke_vote.vote = vote
-                    joke_vote.save()
-
-                    if vote == -1:
-                        likes -= 1
-                        dislikes += 1
-                        msg = "Don't like it after all, huh? Ok. Noted."
-                    else:
-                        likes += 1
-                        dislikes -= 1
-                        msg = 'Grown on you, has it? Ok. Noted.'
-
-            else:
-                joke_vote = JokeVote(user=user, joke=joke, vote=vote)
+            if joke_vote.vote == vote:
+                msg = 'Right. You told us already. Geez.'
+            else: 
+                joke_vote.vote = vote
                 joke_vote.save()
 
                 if vote == -1:
                     likes -= 1
                     dislikes += 1
-                    msg = "Sorry you didn't like the joke."
+                    msg = "Don't like it after all, huh? Ok. Noted."
                 else:
                     likes += 1
                     dislikes -= 1
-                    msg = 'Yeah, good one, right?'
+                    msg = 'Grown on you, has it? Ok. Noted.'
 
-        response = {
-            'msg' : msg,
-            'likes' : likes,
-            'dislikes' : dislikes
-        }
-        return JsonResponse(response)
+        else:
+            joke_vote = JokeVote(user=user, joke=joke, vote=vote)
+            joke_vote.save()
+
+            if vote == -1:
+                dislikes += 1
+                msg = "Sorry you didn't like the joke."
+            else:
+                likes += 1
+                msg = 'Yeah, good one, right?'
+
+    response = {
+        'msg' : msg,
+        'likes' : likes,
+        'dislikes' : dislikes
+    }
+    return JsonResponse(response)

@@ -1,9 +1,11 @@
 window.addEventListener('load', () => {
   const likeButton = document.getElementById('like-button');
   const dislikeButton = document.getElementById('dislike-button');
-  likeButton.addEventListener('click', () => { register(1); })
-  dislikeButton.addEventListener('click', () => { register(-1); })
-})
+  if (likeButton && dislikeButton) {
+    likeButton.addEventListener('click', () => { register(1); });
+    dislikeButton.addEventListener('click', () => { register(-1); });
+  }
+});
 
 function register(vote) {
   const csrfInput =  document.querySelector("input[name='csrfmiddlewaretoken']");
