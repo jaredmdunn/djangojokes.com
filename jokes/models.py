@@ -94,7 +94,7 @@ class JokeVote(models.Model):
     )
     vote = models.SmallIntegerField()
     created = models.DateTimeField(auto_now_add=True)
-    update = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         constraints = [
