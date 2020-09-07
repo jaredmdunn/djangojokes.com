@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -51,6 +52,7 @@ class JokeUpdateView(SuccessMessageMixin, UserPassesTestMixin, UpdateView):
         obj = self.get_object()
         return self.request.user == obj.user
 
+@login_required
 def vote(request, slug):
     user = request.user
     joke = Joke.objects.get(slug=slug)
