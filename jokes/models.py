@@ -49,14 +49,26 @@ class Tag(models.Model):
 class Joke(models.Model):
     question = models.TextField(max_length=200)
     answer = models.TextField(max_length=200, blank=True)
-    category = models.ForeignKey('Category', on_delete=models.PROTECT)
+    category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='jokes')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=50, unique=True, null=False, editable=False)
-    tags = models.ManyToManyField('Tag', blank=True)
+    tags = models.ManyToManyField('Tag', blank=True, related_name='jokes')
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.PROTECT
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='jokes'
     )
+
+    @property
+    def num_votes(self):
+        return self.jokevotes.count()
+
+    @property
+    def num_likes(self):
+        return self.jokevotes.filter(vote=1).count()
+
+    @property
+    def num_dislikes(self):
+        return self.jokevotes.filter(vote=-1).count()
 
     def get_absolute_url(self):
         return reverse('jokes:detail', args=[self.slug])
@@ -70,3 +82,23 @@ class Joke(models.Model):
             self.slug = unique_slug(value, type(self))
 
         super().save(*args, **kwargs)
+
+class JokeVote(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+        related_name='jokevotes'
+    )
+    joke = models.ForeignKey(
+        Joke, on_delete=models.CASCADE,
+        related_name='jokevotes'
+    )
+    vote = models.SmallIntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'joke'], name='one_vote_per_user_per_joke'
+            )
+        ]
