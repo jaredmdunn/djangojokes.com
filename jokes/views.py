@@ -41,7 +41,6 @@ class JokeDetailView(DetailView):
 class JokeListView(ListView):
     model = Joke
 
-
 class JokeUpdateView(SuccessMessageMixin, UserPassesTestMixin, UpdateView):
     model = Joke
     form_class = JokeForm

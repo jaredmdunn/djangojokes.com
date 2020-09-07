@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'crispy_forms',
-    'private_storage',
 
     # my apps
     'common.apps.CommonConfig',
@@ -177,18 +176,26 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'django-jokes-app-jdunn'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_DEFAULT_ACL = None # Use S3 bucket's setting
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400'
+}
+
+STATICFILES_STORAGE = 'djangojokes.storage_backends.StaticStorage'
+DEFAULT_FILE_STORAGE = 'djangojokes.storage_backends.PublicMediaStorage'
+PRIVATE_FILE_STORAGE = 'djangojokes.storage_backends.PrivateMediaStorage'
+
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-#private-storage settings
-PRIVATE_STORAGE_ROOT = MEDIA_ROOT / 'private/'
-PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 
 if os.environ.get('ENVIRONMENT') != 'production':
     from .local_settings import *
