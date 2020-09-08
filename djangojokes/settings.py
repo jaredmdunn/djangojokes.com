@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = '=z9^#_kj_4gl*_4efk@vau(9+x1l4o=ox)@s+=1v(6*0bxe7+&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['djangojokesapp.herokuapp.com']
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -99,16 +99,9 @@ WSGI_APPLICATION = 'djangojokes.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jokes',
-        'USER': 'postgres',
-        'PASSWORD': 'webuc8',
-        'HOST': 'localhost',
-        'PORT': 5432
-    }
-}
+import dj_database_url
+
+DATABASE = { 'default' : dj_database_url.config()}
 
 # EMAIL
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API')
