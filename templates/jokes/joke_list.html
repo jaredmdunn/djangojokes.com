@@ -9,6 +9,7 @@
     </div>
     <div class="col-12 col-md-8 col-lg-6">
       <form class="form-inline my-2 mx-auto" style="max-width: 30rem;">
+        <input type="hidden" name="q" value="{{ request.GET.q }}">
         <label class="my-1 mr-2" for="order">Order By:</label>
         <select class="form-control mr-sm-2" name="order" id="order">
           {% for field in order_fields %}
@@ -43,19 +44,19 @@
         {% with order=request.GET.order dir=request.GET.direction %}
           <tr>
             {% if order == 'joke' and dir == 'asc' %}
-              <th><a href="?order=joke&direction=desc">Joke</a></th>
+              <th><a href="?order=joke&direction=desc&q={{ request.GET.q }}">Joke</a></th>
             {% else %}
-              <th><a href="?order=joke&direction=asc">Joke</a></th>
+              <th><a href="?order=joke&direction=asc&q={{ request.GET.q }}">Joke</a></th>
             {% endif %}
             {% if order == 'category' and dir == 'asc' %}
-              <th><a href="?order=category&direction=desc">Category</a></th>
+              <th><a href="?order=category&direction=desc&q={{ request.GET.q }}">Category</a></th>
             {% else %}
-              <th><a href="?order=category&direction=asc">Category</a></th>
+              <th><a href="?order=category&direction=asc&q={{ request.GET.q }}">Category</a></th>
             {% endif %}
             {% if order == 'creator' and dir == 'asc' %}
-              <th><a href="?order=creator&direction=desc">Creator</a></th>
+              <th><a href="?order=creator&direction=desc&q={{ request.GET.q }}">Creator</a></th>
             {% else %}
-              <th><a href="?order=creator&direction=asc">Creator</a></th>
+              <th><a href="?order=creator&direction=asc&q={{ request.GET.q }}">Creator</a></th>
             {% endif %}
           </tr>
         {% endwith %}
@@ -95,45 +96,5 @@
       </tbody>
     </table>
   </div>
-  <nav aria-label="pagination">
-    <ul class="pagination justify-content-center">
-      {% if page_obj.has_previous %}
-        <li class="page-item">
-          <a class="page-link"
-            href="?page=1&order={{ order }}&direction={{ direction }}">
-            &laquo; 1…
-          </a>
-        </li>
-        {% if page_obj.previous_page_number != 1 %}
-          <li class="page-item">
-            <a class="page-link" 
-              href="?page={{ page_obj.previous_page_number }}&order={{ order }}&direction={{ direction }}">
-              {{ page_obj.previous_page_number }}
-            </a>
-          </li>
-        {% endif %}
-      {% endif %}
-      <li class="page-item active">
-        <span class="page-link">
-          {{ page_obj.number }}
-        </span>
-      </li>
-      {% if page_obj.has_next %}
-        {% if page_obj.next_page_number != page_obj.paginator.num_pages %}
-          <li class="page-item">
-            <a class="page-link" 
-              href="?page={{ page_obj.next_page_number }}&order={{ order }}&direction={{ direction }}">
-              {{ page_obj.next_page_number }}
-            </a>
-          </li>
-        {% endif %}
-        <li class="page-item">
-          <a class="page-link"
-            href="?page={{ page_obj.paginator.num_pages }}&order={{ order }}&direction={{ direction }}">
-            …{{ page_obj.paginator.num_pages }} &raquo;
-          </a>
-        </li>
-      {% endif %}
-    </ul>
-  </nav>
+  {% include 'includes/pagination.html' %}
 {% endblock %}

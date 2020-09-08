@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 
@@ -56,7 +57,7 @@ class JokeListView(ListView):
         context['order_fields'] = list(order_fields.keys())[:-1]
 
         return context
-    
+
     def get_ordering(self):
         order_fields, order_key, direction = self.get_order_settings()
 
@@ -94,6 +95,12 @@ class JokeListView(ListView):
     def get_queryset(self):
         ordering = self.get_ordering()
         qs = Joke.objects.all()
+
+        if 'q' in self.request.GET:
+            q = self.request.GET.get('q')
+            qs = qs.filter(
+                Q(question__icontains=q) | Q(answer__icontains=q)
+            )
 
         if 'slug' in self.kwargs:
             slug = self.kwargs['slug']
@@ -135,7 +142,7 @@ def vote(request, slug):
 
             if joke_vote.vote == vote:
                 msg = 'Right. You told us already. Geez.'
-            else: 
+            else:
                 joke_vote.vote = vote
                 joke_vote.save()
 

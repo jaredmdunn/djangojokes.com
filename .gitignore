@@ -131,3 +131,5 @@ dmypy.json
 #MY ADDITIONS
 solutions
 starter-code
+prospector-result.txt
+pylintrc
