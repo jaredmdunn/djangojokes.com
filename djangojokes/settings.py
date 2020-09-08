@@ -104,7 +104,7 @@ import dj_database_url
 DATABASES = {'default' : dj_database_url.config()}
 
 # EMAIL
-SENDGRID_API_KEY = os.environ.get('SENDGRID_API')
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
