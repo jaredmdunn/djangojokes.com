@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = '=z9^#_kj_4gl*_4efk@vau(9+x1l4o=ox)@s+=1v(6*0bxe7+&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['djangojokesapp.herokuapp.com']
 
